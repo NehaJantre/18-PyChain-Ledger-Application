@@ -51,13 +51,9 @@ import hashlib
 # `amount` attributes
 @dataclass
 class Record:
-
-    # @TODO
-    # Rename the `data` attribute to `record`, and set the data type to `Record`
-    sender: str 
+    sender: str
     receiver: str
     amount: float
-
 
 ################################################################################
 # Step 2:
@@ -76,6 +72,7 @@ class Block:
     # @TODO
     # Rename the `data` attribute to `record`, and set the data type to `Record`
     record: Record
+
     creator_id: int
     prev_hash: str = 0
     timestamp: str = datetime.datetime.utcnow().strftime("%H:%M:%S")
@@ -175,17 +172,15 @@ pychain = setup()
 
 # @TODO:
 # Add an input area where you can get a value for `sender` from the user.
-sender = st.text_input("Sender")
+sender = st.text_input("Sender:")
 
 # @TODO:
 # Add an input area where you can get a value for `receiver` from the user.
-# YOUR CODE HERE
-receiver = st.text_input("Receiver")
+receiver = st.text_input("Receiver:")
 
 # @TODO:
 # Add an input area where you can get a value for `amount` from the user.
-# YOUR CODE HERE
-amount = st.text_input("Amount")
+amount = st.text_input("Amount:")
 
 if st.button("Add Block"):
     prev_block = pychain.chain[-1]
@@ -194,8 +189,7 @@ if st.button("Add Block"):
     # @TODO
     # Update `new_block` so that `Block` consists of an attribute named `record`
     # which is set equal to a `Record` that contains the `sender`, `receiver`,
-    # and `amount` values    sender: str
-    
+    # and `amount` values
     new_block = Block(
         record= Record(sender, receiver, float(amount)),
         creator_id=42,
@@ -211,6 +205,7 @@ if st.button("Add Block"):
 st.markdown("## The PyChain Ledger")
 
 pychain_df = pd.DataFrame(pychain.chain)
+pychain_df = pychain_df.astype({'record': str, 'prev_hash': str})
 st.write(pychain_df)
 
 difficulty = st.sidebar.slider("Block Difficulty", 1, 5, 2)
